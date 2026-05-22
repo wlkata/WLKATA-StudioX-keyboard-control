@@ -1,0 +1,98 @@
+<div class="kb-ctrl">
+  <h2 class="kb-ctrl-title">Keyboard Control</h2>
+  <p class="kb-ctrl-desc">
+    Jog connected robot axes with buttons or keyboard shortcuts.
+    Hold multiple keys for simultaneous multi-axis movement.
+  </p>
+
+  <!-- Robot selector -->
+  <div class="kb-ctrl-field">
+    <label>Robot</label>
+    <div class="kb-ctrl-field-inline">
+      <select id="kb-robot"><option value="">Active robot</option></select>
+      <button id="kb-refresh" class="kb-ctrl-icon-btn" title="Refresh device list">&#x21bb;</button>
+    </div>
+  </div>
+
+  <!-- Step size -->
+  <div class="kb-ctrl-field">
+    <label>Step (mm)</label>
+    <input id="kb-step" type="number" value="5" min="0.1" max="100" step="0.5" />
+  </div>
+
+  <!-- Axis jog buttons -->
+  <div class="kb-ctrl-divider">Axis Jog</div>
+  <div class="kb-ctrl-jog-grid">
+    <button class="kb-ctrl-jog-btn" data-axis="x" data-dir="1" data-action="xPos">
+      <span>+X</span><small class="kb-ctrl-hint" data-hint="xPos"></small>
+    </button>
+    <button class="kb-ctrl-jog-btn" data-axis="y" data-dir="1" data-action="yPos">
+      <span>+Y</span><small class="kb-ctrl-hint" data-hint="yPos"></small>
+    </button>
+    <button class="kb-ctrl-jog-btn" data-axis="z" data-dir="1" data-action="zPos">
+      <span>+Z</span><small class="kb-ctrl-hint" data-hint="zPos"></small>
+    </button>
+    <button class="kb-ctrl-jog-btn" data-axis="x" data-dir="-1" data-action="xNeg">
+      <span>&#x2212;X</span><small class="kb-ctrl-hint" data-hint="xNeg"></small>
+    </button>
+    <button class="kb-ctrl-jog-btn" data-axis="y" data-dir="-1" data-action="yNeg">
+      <span>&#x2212;Y</span><small class="kb-ctrl-hint" data-hint="yNeg"></small>
+    </button>
+    <button class="kb-ctrl-jog-btn" data-axis="z" data-dir="-1" data-action="zNeg">
+      <span>&#x2212;Z</span><small class="kb-ctrl-hint" data-hint="zNeg"></small>
+    </button>
+  </div>
+
+  <!-- End effector -->
+  <div class="kb-ctrl-divider">End Effector</div>
+  <div class="kb-ctrl-field">
+    <label>Type</label>
+    <select id="kb-eff-type">
+      <option value="pump">Pump</option>
+      <option value="gripper">Gripper</option>
+    </select>
+  </div>
+  <div class="kb-ctrl-eff-grid">
+    <button class="kb-ctrl-eff-btn" data-eff="open" data-action="effOpen">
+      Open<small class="kb-ctrl-hint" data-hint="effOpen"></small>
+    </button>
+    <button class="kb-ctrl-eff-btn" data-eff="close" data-action="effClose">
+      Close<small class="kb-ctrl-hint" data-hint="effClose"></small>
+    </button>
+    <button class="kb-ctrl-eff-btn" data-eff="off" data-action="effOff">
+      Off<small class="kb-ctrl-hint" data-hint="effOff"></small>
+    </button>
+  </div>
+
+  <!-- Keyboard control toggle -->
+  <div class="kb-ctrl-divider">Keyboard Control</div>
+  <label class="kb-ctrl-toggle">
+    <span>Enable keyboard capture</span>
+    <span class="kb-ctrl-switch">
+      <input type="checkbox" id="kb-toggle" />
+      <span class="kb-ctrl-slider"></span>
+    </span>
+  </label>
+
+  <!-- Key bindings -->
+  <div class="kb-ctrl-bindings">
+    <div class="kb-ctrl-bind-header">
+      <span>Key Bindings</span>
+      <button id="kb-reset" class="kb-ctrl-link-btn">Reset</button>
+    </div>
+    <div class="kb-ctrl-bind-list">
+      <div class="kb-ctrl-bind-item"><span>+X</span><button class="kb-ctrl-key-btn" data-bind="xPos">W</button></div>
+      <div class="kb-ctrl-bind-item"><span>&#x2212;X</span><button class="kb-ctrl-key-btn" data-bind="xNeg">S</button></div>
+      <div class="kb-ctrl-bind-item"><span>+Y</span><button class="kb-ctrl-key-btn" data-bind="yPos">A</button></div>
+      <div class="kb-ctrl-bind-item"><span>&#x2212;Y</span><button class="kb-ctrl-key-btn" data-bind="yNeg">D</button></div>
+      <div class="kb-ctrl-bind-item"><span>+Z</span><button class="kb-ctrl-key-btn" data-bind="zPos">Q</button></div>
+      <div class="kb-ctrl-bind-item"><span>&#x2212;Z</span><button class="kb-ctrl-key-btn" data-bind="zNeg">E</button></div>
+      <div class="kb-ctrl-bind-item"><span>Open</span><button class="kb-ctrl-key-btn" data-bind="effOpen">J</button></div>
+      <div class="kb-ctrl-bind-item"><span>Close</span><button class="kb-ctrl-key-btn" data-bind="effClose">K</button></div>
+      <div class="kb-ctrl-bind-item"><span>Off</span><button class="kb-ctrl-key-btn" data-bind="effOff">L</button></div>
+    </div>
+  </div>
+
+  <!-- Status -->
+  <div id="kb-status" class="kb-ctrl-status"></div>
+</div>

@@ -1,0 +1,352 @@
+/* ── Keyboard Control Extension ─────────────────────────────────────── */
+.kb-ctrl {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 16px 32px;
+  height: 100%;
+  box-sizing: border-box;
+  overflow-y: auto;
+  user-select: none;
+}
+
+.kb-ctrl-title {
+  margin: 0 0 2px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary, #333);
+}
+
+.kb-ctrl-desc {
+  margin: 0 0 18px;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--text-secondary, #666);
+}
+
+/* ── Field row ─────────────────────────────────────────────────────── */
+.kb-ctrl-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.kb-ctrl-field > label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary, #333);
+  min-width: 64px;
+  flex-shrink: 0;
+}
+
+.kb-ctrl-field-inline {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+
+.kb-ctrl-field select,
+.kb-ctrl-field input[type="number"] {
+  padding: 5px 8px;
+  font-size: 13px;
+  border: 1px solid var(--border-primary, #ccc);
+  border-radius: 6px;
+  background: var(--bg-primary, #fff);
+  color: var(--text-primary, #333);
+  outline: none;
+}
+
+.kb-ctrl-field select           { flex: 1; min-width: 0; }
+.kb-ctrl-field input[type="number"] { width: 72px; text-align: center; }
+
+.kb-ctrl-field select:focus,
+.kb-ctrl-field input:focus {
+  border-color: var(--accent, #2196F3);
+}
+
+.kb-ctrl-icon-btn {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-primary, #ccc);
+  border-radius: 6px;
+  background: var(--bg-secondary, #fafafa);
+  color: var(--text-primary, #333);
+  font-size: 15px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.kb-ctrl-icon-btn:hover {
+  border-color: var(--accent, #2196F3);
+  color: var(--accent, #2196F3);
+}
+
+/* ── Section divider ───────────────────────────────────────────────── */
+.kb-ctrl-divider {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary, #888);
+  margin: 14px 0 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border-primary, #e5e5e5);
+}
+
+/* ── Jog button grid (3 columns) ───────────────────────────────────── */
+.kb-ctrl-jog-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.kb-ctrl-jog-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  height: 52px;
+  border: 1.5px solid var(--border-primary, #ccc);
+  border-radius: 10px;
+  background: var(--bg-secondary, #fafafa);
+  color: var(--text-primary, #333);
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 0;
+  transition: background 0.12s, border-color 0.12s, transform 0.08s;
+}
+
+.kb-ctrl-jog-btn:hover {
+  border-color: var(--accent, #2196F3);
+  background: var(--bg-tertiary, #f0f0f0);
+}
+
+.kb-ctrl-jog-btn:active,
+.kb-ctrl-jog-btn.kb-ctrl-pressed {
+  transform: scale(0.96);
+  background: var(--accent, #2196F3);
+  border-color: var(--accent, #2196F3);
+  color: #fff;
+}
+
+/* ── Key hint shown on jog / eff buttons ───────────────────────────── */
+.kb-ctrl-hint {
+  font-size: 10px;
+  font-weight: 600;
+  opacity: 0.5;
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+}
+
+.kb-ctrl-jog-btn.kb-ctrl-pressed .kb-ctrl-hint,
+.kb-ctrl-eff-btn.kb-ctrl-pressed .kb-ctrl-hint {
+  opacity: 0.85;
+}
+
+/* ── End-effector button grid ──────────────────────────────────────── */
+.kb-ctrl-eff-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.kb-ctrl-eff-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  height: 38px;
+  border: 1.5px solid var(--border-primary, #ccc);
+  border-radius: 8px;
+  background: var(--bg-secondary, #fafafa);
+  color: var(--text-primary, #333);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 0;
+  transition: background 0.12s, border-color 0.12s;
+}
+
+.kb-ctrl-eff-btn:hover {
+  border-color: var(--accent, #2196F3);
+}
+
+.kb-ctrl-eff-btn:active,
+.kb-ctrl-eff-btn.kb-ctrl-pressed {
+  background: var(--accent, #2196F3);
+  border-color: var(--accent, #2196F3);
+  color: #fff;
+}
+
+/* ── Toggle switch ─────────────────────────────────────────────────── */
+.kb-ctrl-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0;
+  margin-bottom: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary, #333);
+  cursor: pointer;
+}
+
+.kb-ctrl-switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.kb-ctrl-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.kb-ctrl-slider {
+  position: absolute;
+  inset: 0;
+  background: var(--border-primary, #ccc);
+  border-radius: 22px;
+  transition: background 0.2s;
+  cursor: pointer;
+}
+
+.kb-ctrl-slider::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+.kb-ctrl-switch input:checked + .kb-ctrl-slider {
+  background: var(--accent, #2196F3);
+}
+
+.kb-ctrl-switch input:checked + .kb-ctrl-slider::before {
+  transform: translateX(18px);
+}
+
+/* ── Key binding list ──────────────────────────────────────────────── */
+.kb-ctrl-bindings {
+  margin-bottom: 8px;
+}
+
+.kb-ctrl-bind-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.kb-ctrl-bind-header > span {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary, #888);
+}
+
+.kb-ctrl-link-btn {
+  border: none;
+  background: none;
+  color: var(--accent, #2196F3);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+.kb-ctrl-link-btn:hover {
+  text-decoration: underline;
+}
+
+.kb-ctrl-bind-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.kb-ctrl-bind-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--bg-secondary, #f5f5f5);
+  border-radius: 6px;
+  padding: 3px 8px 3px 10px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-primary, #333);
+}
+
+.kb-ctrl-key-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 24px;
+  padding: 0 6px;
+  border: 1.5px solid var(--border-primary, #ccc);
+  border-radius: 4px;
+  background: var(--bg-primary, #fff);
+  color: var(--text-primary, #333);
+  font-size: 11px;
+  font-weight: 700;
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+  transition: background 0.12s, border-color 0.12s, box-shadow 0.12s;
+}
+
+.kb-ctrl-key-btn:hover {
+  border-color: var(--accent, #2196F3);
+}
+
+/* Listening for a new key (rebinding) */
+.kb-ctrl-key-btn.kb-ctrl-key-listen {
+  background: var(--accent, #2196F3);
+  border-color: var(--accent, #2196F3);
+  color: #fff;
+  animation: kb-pulse 0.8s ease-in-out infinite;
+}
+
+/* Key is currently held down */
+.kb-ctrl-key-btn.kb-ctrl-key-pressed {
+  background: var(--accent, #2196F3);
+  border-color: var(--accent, #2196F3);
+  color: #fff;
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.25);
+}
+
+@keyframes kb-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.5; }
+}
+
+/* ── Status bar ────────────────────────────────────────────────────── */
+.kb-ctrl-status {
+  margin-top: auto;
+  padding-top: 14px;
+  font-size: 11.5px;
+  color: var(--text-muted, #999);
+  text-align: center;
+  min-height: 18px;
+}

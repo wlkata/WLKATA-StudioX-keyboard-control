@@ -1,0 +1,15 @@
+{
+  "name": "keyboard-control",
+  "displayName": "Keyboard Control",
+  "version": "1.0.0",
+  "description": "Jog robot axes with on-screen buttons or customizable keyboard shortcuts. Supports simultaneous multi-axis movement and end-effector control.",
+  "contributes": {
+    "sidebarTab": {
+      "id": "keyboard-control",
+      "label": "Keyboard",
+      "html": "frontend/tab.html",
+      "js": "frontend/tab.js",
+      "css": "frontend/tab.css"
+    }
+  }
+}
