@@ -48,19 +48,21 @@
   <div class="kb-ctrl-field">
     <label>Type</label>
     <select id="kb-eff-type">
-      <option value="pump">Pump</option>
+      <option value="none">None</option>
+      <option value="suction">Suction Cup</option>
       <option value="gripper">Gripper</option>
+      <option value="soft">Soft Gripper</option>
     </select>
   </div>
-  <div class="kb-ctrl-eff-grid">
-    <button class="kb-ctrl-eff-btn" data-eff="open" data-action="effOpen">
-      Open<small class="kb-ctrl-hint" data-hint="effOpen"></small>
+  <div class="kb-ctrl-eff-grid" id="kb-eff-grid">
+    <button class="kb-ctrl-eff-btn" data-slot="0" data-action="effOpen">
+      <span class="kb-ctrl-eff-label">SUCTION</span><small class="kb-ctrl-hint" data-hint="effOpen"></small>
     </button>
-    <button class="kb-ctrl-eff-btn" data-eff="close" data-action="effClose">
-      Close<small class="kb-ctrl-hint" data-hint="effClose"></small>
+    <button class="kb-ctrl-eff-btn" data-slot="1" data-action="effClose">
+      <span class="kb-ctrl-eff-label">BLOW</span><small class="kb-ctrl-hint" data-hint="effClose"></small>
     </button>
-    <button class="kb-ctrl-eff-btn" data-eff="off" data-action="effOff">
-      Off<small class="kb-ctrl-hint" data-hint="effOff"></small>
+    <button class="kb-ctrl-eff-btn" data-slot="2" data-action="effOff">
+      <span class="kb-ctrl-eff-label">OFF</span><small class="kb-ctrl-hint" data-hint="effOff"></small>
     </button>
   </div>
 
@@ -87,9 +89,9 @@
       <div class="kb-ctrl-bind-item"><span>&#x2212;Y</span><button class="kb-ctrl-key-btn" data-bind="yNeg">D</button></div>
       <div class="kb-ctrl-bind-item"><span>+Z</span><button class="kb-ctrl-key-btn" data-bind="zPos">Q</button></div>
       <div class="kb-ctrl-bind-item"><span>&#x2212;Z</span><button class="kb-ctrl-key-btn" data-bind="zNeg">E</button></div>
-      <div class="kb-ctrl-bind-item"><span>Open</span><button class="kb-ctrl-key-btn" data-bind="effOpen">J</button></div>
-      <div class="kb-ctrl-bind-item"><span>Close</span><button class="kb-ctrl-key-btn" data-bind="effClose">K</button></div>
-      <div class="kb-ctrl-bind-item"><span>Off</span><button class="kb-ctrl-key-btn" data-bind="effOff">L</button></div>
+      <div class="kb-ctrl-bind-item"><span data-eff-bind-label="0">SUCTION</span><button class="kb-ctrl-key-btn" data-bind="effOpen">J</button></div>
+      <div class="kb-ctrl-bind-item"><span data-eff-bind-label="1">BLOW</span><button class="kb-ctrl-key-btn" data-bind="effClose">K</button></div>
+      <div class="kb-ctrl-bind-item"><span data-eff-bind-label="2">OFF</span><button class="kb-ctrl-key-btn" data-bind="effOff">L</button></div>
     </div>
   </div>
 

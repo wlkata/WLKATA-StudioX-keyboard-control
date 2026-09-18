@@ -15,6 +15,27 @@
   var MOVE_ACTIONS = ['xPos', 'xNeg', 'yPos', 'yNeg', 'zPos', 'zNeg'];
   var EFF_ACTIONS  = ['effOpen', 'effClose', 'effOff'];
 
+  // Same mapping as Blockly / Teaching control panel.
+  var EFFECTORS = {
+    none: [],
+    suction: [
+      { label: 'SUCTION', endpoint: '/cmd/pump',    mode: 1 },
+      { label: 'BLOW',    endpoint: '/cmd/pump',    mode: 2 },
+      { label: 'OFF',     endpoint: '/cmd/pump',    mode: 0 }
+    ],
+    gripper: [
+      { label: 'OPEN',    endpoint: '/cmd/gripper', mode: 1 },
+      { label: 'CLOSE',   endpoint: '/cmd/gripper', mode: 2 },
+      { label: 'OFF',     endpoint: '/cmd/gripper', mode: 0 }
+    ],
+    soft: [
+      { label: 'OPEN',    endpoint: '/cmd/pump',    mode: 1 },
+      { label: 'CLOSE',   endpoint: '/cmd/pump',    mode: 2 },
+      { label: 'OFF',     endpoint: '/cmd/pump',    mode: 0 }
+    ]
+  };
+  var EFF_SLOT = { effOpen: 0, effClose: 1, effOff: 2 };
+
   /* ── State ────────────────────────────────────────────────────────── */
   var bindings  = {};           // action → key (lowercase)
   var kbOn      = false;        // keyboard capture enabled
@@ -63,11 +84,17 @@
       if (s.step != null) $step.value = s.step;
       if (s.effType) $effType.value = s.effType;
     }
+    // Old builds used "pump"; control panel calls it suction.
+    if ($effType.value === 'pump') $effType.value = 'suction';
+    if (!$effType.value || !EFFECTORS.hasOwnProperty($effType.value)) {
+      $effType.value = 'suction';
+    }
     // Fill defaults for any missing bindings
     for (var k in DEFAULTS) {
       if (!bindings[k]) bindings[k] = DEFAULTS[k];
     }
     syncKeyBtns();
+    updateEffectorUI();
   }
 
   function saveSettings() {
@@ -118,25 +145,45 @@
   }
 
   /* ── End-effector command ─────────────────────────────────────────── */
+  function effectorDefs() {
+    return EFFECTORS[$effType.value] || [];
+  }
+
+  function updateEffectorUI() {
+    var defs = effectorDefs();
+    var grid = document.getElementById('kb-eff-grid');
+    if (grid) grid.style.display = defs.length ? '' : 'none';
+
+    document.querySelectorAll('.kb-ctrl-eff-btn').forEach(function (btn) {
+      var slot = parseInt(btn.getAttribute('data-slot'), 10);
+      var def = defs[slot];
+      var labelEl = btn.querySelector('.kb-ctrl-eff-label');
+      if (!def) {
+        btn.style.display = 'none';
+        return;
+      }
+      btn.style.display = '';
+      if (labelEl) labelEl.textContent = def.label;
+    });
+
+    document.querySelectorAll('[data-eff-bind-label]').forEach(function (el) {
+      var slot = parseInt(el.getAttribute('data-eff-bind-label'), 10);
+      var def = defs[slot];
+      el.textContent = def ? def.label : '—';
+    });
+  }
+
   function sendEff(action) {
-    var type = $effType.value;
-    var endpoint, mode;
+    var defs = effectorDefs();
+    var slot = EFF_SLOT[action];
+    var def = defs[slot];
+    if (!def) return;
 
-    if (type === 'gripper') {
-      endpoint = '/cmd/gripper';
-      // Open = release (0), Close = grip (1), Off = release (0)
-      mode = (action === 'effClose') ? 1 : 0;
-    } else {
-      endpoint = '/cmd/pump';
-      // Open = suction on (1), Close = off (0), Off = off (0)
-      mode = (action === 'effOpen') ? 1 : 0;
-    }
-
-    var body = { mode: mode };
+    var body = { mode: def.mode };
     var p = getPort();
     if (p) body.port = p;
 
-    fetch(serverUrl + endpoint, {
+    fetch(serverUrl + def.endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
@@ -350,8 +397,7 @@
   // End-effector buttons
   document.querySelectorAll('.kb-ctrl-eff-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
-      var map = { open: 'effOpen', close: 'effClose', off: 'effOff' };
-      sendEff(map[btn.dataset.eff]);
+      sendEff(btn.getAttribute('data-action'));
     });
   });
 
@@ -397,7 +443,10 @@
 
   // Save on step / effector-type change
   $step.addEventListener('change', saveSettings);
-  $effType.addEventListener('change', saveSettings);
+  $effType.addEventListener('change', function () {
+    updateEffectorUI();
+    saveSettings();
+  });
 
   /* ── Tab lifecycle ────────────────────────────────────────────────── */
   ExtensionAPI.onActivate(EXT, function () {
