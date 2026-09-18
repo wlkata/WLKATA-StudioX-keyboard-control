@@ -61,6 +61,13 @@
   }
 
   function getPort() { return $robot.value || undefined; }
+
+  function requirePort() {
+    var p = getPort();
+    if (p) return p;
+    setStatus('Select a robot first');
+    return null;
+  }
   function getStep() { return parseFloat($step.value) || 5; }
   function setStatus(msg) { $status.textContent = msg; }
 
@@ -111,7 +118,7 @@
       .then(function (r) { return r.json(); })
       .then(function (data) {
         var cur = $robot.value;
-        $robot.innerHTML = '<option value="">Active robot</option>';
+        $robot.innerHTML = '<option value="" disabled>Select a robot</option>';
         ((data && data.ports) || []).forEach(function (p) {
           if (!p.connected) return;
           var o = document.createElement('option');
@@ -119,15 +126,19 @@
           o.textContent = p.port + ' (' + p.model + ')';
           $robot.appendChild(o);
         });
-        if (cur) $robot.value = cur;
+        if (cur && $robot.querySelector('option[value="' + CSS.escape(cur) + '"]')) {
+          $robot.value = cur;
+        } else {
+          $robot.value = '';
+        }
       });
   }
 
   /* ── Jog command ──────────────────────────────────────────────────── */
   function sendJog(values) {
-    var body = { mode: 'coord', values: values };
-    var p = getPort();
-    if (p) body.port = p;
+    var p = requirePort();
+    if (!p) return Promise.reject(new Error('Select a robot first'));
+    var body = { mode: 'coord', values: values, port: p };
     return fetch(serverUrl + '/cmd/jog', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -179,9 +190,9 @@
     var def = defs[slot];
     if (!def) return;
 
-    var body = { mode: def.mode };
-    var p = getPort();
-    if (p) body.port = p;
+    var p = requirePort();
+    if (!p) return;
+    var body = { mode: def.mode, port: p };
 
     fetch(serverUrl + def.endpoint, {
       method: 'POST',
@@ -196,9 +207,9 @@
     await sleep(200);
     while (kbOn) {
       try {
-        var body = {};
         var p = getPort();
-        if (p) body.port = p;
+        if (!p) return;
+        var body = { port: p };
         var res = await fetch(serverUrl + '/cmd/last-status', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
